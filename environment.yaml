@@ -1,0 +1,36 @@
+name: default
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.8.6
+  - pip=22.2.2
+  - ipykernel=5.3.4
+  - notebook=6.3.0
+  - pip:
+    # Linters
+    # - yapf==0.30.0
+    - pylint==2.6.0
+    - yamllint==1.23.0
+    # AML
+    - azureml-core==1.34.0
+    - azureml-defaults==1.34.0
+    - azureml-contrib-notebook==1.34.0
+    - azureml-train-automl-client==1.34.0
+    - azureml-pipeline==1.34.0
+    - azure-mgmt-datafactory==1.1.0
+    # CLI
+    - fire==0.4.0
+    # DS
+    - pandas==1.2.3
+    - numpy==1.19.5
+    - seaborn==0.11.1
+    - matplotlib==3.3.3
+    - joblib==1.0.1
+    - jupytext==1.10.2
+    - scikit-learn==1.0.2
+    - category_encoders==2.2.2
+    - plotly==5.8.0
+    - xgboost==1.6.0
+    - lightgbm==3.3.1
