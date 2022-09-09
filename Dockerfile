@@ -42,7 +42,7 @@ RUN rm /tmp/environment.yaml \
   # && chown default /opt/miniconda/envs/$CONDA_ENV_NAME
 
 # Add flake8 path to environment
-RUN export $PATH="/home/$USERNAME/.local/bin:$PATH"
+# RUN export $PATH="/home/$USERNAME/.local/bin:$PATH"
 
 ENV DEBIAN_FRONTEND="noninteractive" TZ="Europe/London"
 
@@ -67,28 +67,48 @@ RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
 RUN npm install tree-sitter-cli 
 RUN npm install -g neovim
-RUN pip install pynvim pyright pylint prettier black
+RUN pip install pynvim pyright prettier black flake8
 RUN apt-get install yadm
-RUN export PATH=$PATH:/home/default/.local/bin
+RUN export PATH=$PATH:/home/$USERNAME/.local/bin
 RUN apt-get install unzip
-RUN apt-get install lua-language-server
+# RUN apt-get install lua-language-server
 
 RUN mkdir -p /home/$USERNAME/.config/nvim
 RUN git clone https://github.com/a-noakes/nvim-lua.git /home/$USERNAME/.config/nvim
 RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim \
  /home/$USERNAME/.local/share/nvim/site/pack/packer/start/packer.nvim
 
+ENV DEBIAN_FRONTEND="interactive"
+
 RUN chown -R $USERNAME /home/$USERNAME
 # RUN chmod 2775 /home/$USERNAME
+
+RUN rm -rf /root/TMP
+
+
 
 WORKDIR /root
 RUN conda init bash \
   && conda config --set auto_activate_base false \
   && echo "conda activate $CONDA_ENV_NAME" >> ~/.bashrc
 
+# install neovim packages
+
+# Install Tree-Sitter languages
+
+
 USER $USERNAME
 
-# RUN rm -rf /root/TMP
+RUN yes '' | nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+# RUN yes '' | nvim --headless -c 'autocmd User PackerComplete quitall' -c 'TSinstall'
+
+# RUN chown -R $USERNAME /home/$USERNAME/.local/share/nvim
+# WORKDIR /home/$USERNAME/.local/share/nvim
+# RUN git clone https://github.com/tree-sitter/tree-sitter-python.git \
+#   && git clone https://github.com/DerekStride/tree-sitter-sql.git
+  # && git clone https://github.com/camdencheek/tree-sitter-dockerfile.git
+
+
 
 WORKDIR /home/workspace
 
